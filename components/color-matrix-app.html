@@ -9,17 +9,33 @@
         padding:20px;
         box-sizing: border-box;
       }
+      .controlls{
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .controlls span{
+        margin-right: 10px;
+      }
+      .controlls input{
+        min-width:300px;
+      }
       row-map-regions{
         width:100%;
-
-
       }
     </style>
 
     <div class='controlls'>
-      <span>Query</span> <input placeholder='query' value="{{query::change}}"></input>
-      <span>Colors</span><input placeholder='colors' value="{{colors::change}}"></input>
-      <span>Variable</span> <input placeholder='parameter' value="{{variable::change}}"></input>
+      <div>
+        <span>Query</span> <input  placeholder='query' value="{{query::change}}"></input>
+      </div>
+      <div>
+        <span>Colors</span><input placeholder='colors' value="{{colors::change}}"></input>
+      </div>
+      <div>
+        <span>Variable</span> <input placeholder='parameter' value="{{variable::change}}"></input>
+      </div>
     </div>
 
     <div class='scale'>
