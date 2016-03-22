@@ -1,0 +1,43 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="turbo-carto-css">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'turbo-carto-css',
+      properties:{
+        css: {
+          type: String,
+          observer: 'generateCSS'
+        },
+        query: String,
+        user: String,
+        result:{
+          notify : true,
+          type: String,
+          value: '#layer{polygon-fill:red}'
+        }
+      },
+      generateCSS:function(){
+        console.log("query is ", this.query)
+        var datasource = new turbocartocss.datasource.SqlApi(this.query);
+        turbocartocss(this.css, datasource, function(err, cartocss) {
+          if(err){
+            console.log(err)
+          }
+          else{
+            this.result=cartocss;
+            console.log("from turbo cartocss", cartocss)
+          }
+        }.bind(this));
+      }
+    });
+  </script>
+</dom-module>

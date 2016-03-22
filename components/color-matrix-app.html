@@ -1,0 +1,101 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../components/row-map-regions.html">
+
+<dom-module id="color-matrix-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      row-map-regions{
+        width:100%;
+        margin-bottom: 20px;
+      }
+    </style>
+
+    <div class='controlls'>
+      <span>Query</span> <input placeholder='query' value="{{query::change}}"></input>
+      <span>Colors</span><input placeholder='colors' value="{{colors::change}}"></input>
+      <span>Variable</span> <input placeholder='parameter' value="{{variable::change}}"></input>
+    </div>
+
+    <div class='scale'>
+      <template is="dom-repeat" items="{{colorArray}}">
+        <div class='segment'>
+          <span>{{item}}</span>
+          <div style='background-color:{{item}};width:200px;height:20px'></div>
+        </div>
+      </template>
+    </div>
+
+    <template is="dom-repeat" items="{{binTypes}}">
+      <h2>{{item}}</h2>
+
+
+      <row-map-regions style='width:600px; height:400px;'
+        user={{user}}
+        query = {{query}}
+        basemaptype='darkmatter'
+        css = {{generatecss(colors,item,variable)}}
+      ></row-map-regions>
+
+      <row-map-regions style='width:600px; height:400px;'
+        user={{user}}
+        query = {{query}}
+        basemaptype='positron'
+        css = {{generatecss(colors,item,variable)}}
+      ></row-map-regions>
+    </template>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'color-matrix-app',
+      properties:{
+        colors: {
+          type: String,
+          value:"#5F1F07,#7F3209,#A14706,#C45C01,#DB7C00,#EF9C01"
+        },
+        query: {
+          type:String,
+          value: 'select * from eye_ear_result_1'
+        },
+        colorArray:{
+          type : Array,
+          computed:"splitArray(colors)"
+        },
+        variable: {
+          type: String,
+          value: 'total_pop'
+        },
+        user: String,
+        binTypes:{
+          type : Array,
+          value: ['jenks','quantiles','equal']
+        },
+        baseMaps:{
+          type : Array,
+          value: ['darkmatter','positron']
+        }
+      },
+
+      splitArray:function(colors){
+        return colors.split(',');
+      },
+
+      generatecss:function(colors,method, variable){
+        console.log(colors,method)
+
+        return `#table{
+            polygon-fill: ramp([${variable}],colors(${colors}),${method});
+            polygon-opacity: 0.9;
+            line-opacity: 0;
+            polygon-gamma: 0.2;
+          }`
+      }
+
+
+    });
+  </script>
+</dom-module>

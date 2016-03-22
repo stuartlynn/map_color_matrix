@@ -1,0 +1,114 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel='import' href='../components/turbo-carto-css.html'>
+
+<dom-module id="static-map">
+  <template>
+    <style>
+      :host {
+
+      }
+    </style>
+
+    <img src={{image_url}}></img>
+    <turbo-carto-css query={{query}} css={{turbocss}} result={{css}}></turbo-carto-css>
+  </template>
+  <script>
+    Polymer({
+      is: '',
+      properties:{
+        turbocss:String,
+        css : {
+          type: String,
+          observer: 'create_anon_map',
+          value: ''
+        },
+        table: String,
+        user: String,
+        query:{
+          type: String,
+          observer: 'create_anon_map',
+          value: ''
+        },
+        bounds: String,
+        apikey: String,
+        basemap_type:String,
+        image_url:{
+          type: String,
+          value: "/images/squares.gif"
+        }
+      },
+      ready:function(){
+        if(this.css !='' && this.user){
+          this.create_anon_map()
+        }
+      },
+      anon_map_url:function(){
+        return 'https://'+this.user+'.cartodb.com/api/v1/map?api_key=cbbc4efb5201efb60996d645f264ef4e7b14495b'
+      },
+      cleaned_css:function(){
+        return this.css.replace(/(\r\n|\n|\r)/gm,"");
+      },
+      base_map_params:function(){
+        lookup = {
+          positron : 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+          darkmatter:'http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
+        }
+
+
+        return {
+          "type": "http",
+          "options": {
+            "urlTemplate": lookup[this.basemaptype],
+            "subdomains": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        }
+      },
+      create_anon_map:function(){
+          this.image_url ='/images/squares.gif'
+          if (this.user && this.css !=''){
+
+            params = {
+              "version": "1.3.0",
+              "layers": [
+                this.base_map_params(),
+
+                {
+                "type": "mapnik",
+                "options": {
+                  "cartocss_version": "2.1.1",
+                  "cartocss": this.cleaned_css(),
+                  "sql": this.query,
+                  "interactivity":[]
+                }
+              }
+
+            ]
+            }
+
+            $.ajax({
+              url:this.anon_map_url(),
+              type: 'POST',
+              contentType: 'application/json',
+              dataType:'json',
+              data:  JSON.stringify(params),
+              success:function(result){
+                this.layergroupid  = result.layergroupid;
+                this.update_map()
+                console.log(result)
+              }.bind(this)
+            });
+          }
+      },
+
+
+      update_map:function(){
+        this.image_url = 'https://'+this.user+'.cartodb.com/api/v1/map/static/bbox/'+this.layergroupid+'/'+this.bounds+'/300/300.jpeg'
+        console.log(this.image_url)
+      }
+    });
+  </script>
+</dom-module>

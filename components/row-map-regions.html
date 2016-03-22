@@ -1,0 +1,55 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel='import' href="static-map.html">
+
+<dom-module id="row-map-regions">
+  <template>
+    <style>
+      :host {
+        height: 300px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      h2{
+        text-align:center;
+      }
+      .map{
+        margin-right:20px;
+      }
+    </style>
+
+    <template is="dom-repeat" items="{{regions}}">
+      <div class='map'>
+      <h2 >{{item.name}}</h2>
+        <static-map
+          user='stuartlynn'
+          bounds={{item.bounds}}
+          query = {{query}}
+          turbocss = {{css}}
+          basemaptype={{basemaptype}}
+        ></static-map>
+      </div>
+    </template>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'row-map-regions',
+      properties:{
+        css: String,
+        query: String,
+        basemaptype: String
+      },
+      ready:function(){
+        this.regions= [
+          {name:'county', bounds: '-127.62,9.8,-62.75,50.18' },
+          {name:'state',  bounds:'-75.6409,39.8845,-71.9934,41.8777'},
+          {name:'city', bounds:'-74.078064,40.688448,-73.900566,40.81251'},
+          {name:'counties', bounds:'-110.3192,31.2879,-102.2113,36.2354'}
+        ]
+      }
+    });
+
+  </script>
+</dom-module>
