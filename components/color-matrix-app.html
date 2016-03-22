@@ -31,7 +31,8 @@
     <template is="dom-repeat" items="{{binTypes}}">
       <h2>{{item}}</h2>
 
-
+      <p>{{generatecss(colors,item,variable)}}</p>
+      
       <row-map-regions style='width:600px; height:400px;'
         user={{user}}
         query = {{query}}

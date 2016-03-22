@@ -5,31 +5,39 @@
   <template>
     <style>
       :host {
-        height: 300px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        height: 700px;
+        display:flex;
+        flex-direction: column;
       }
       h2{
         text-align:center;
       }
+      .maps{
+        height: 300px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      },
       .map{
         margin-right:20px;
       }
     </style>
 
-    <template is="dom-repeat" items="{{regions}}">
-      <div class='map'>
-      <h2 >{{item.name}}</h2>
-        <static-map
-          user='stuartlynn'
-          bounds={{item.bounds}}
-          query = {{query}}
-          turbocss = {{css}}
-          basemaptype={{basemaptype}}
-        ></static-map>
-      </div>
-    </template>
+    <div class='maps'>
+      <template is="dom-repeat" items="{{regions}}">
+        <div class='map'>
+        <h2 >{{item.name}}</h2>
+
+          <static-map
+            user='stuartlynn'
+            bounds={{item.bounds}}
+            query = {{query}}
+            turbocss = {{css}}
+            basemaptype={{basemaptype}}
+          ></static-map>
+      </template>
+    </div>
+  </div>
 
 
   </template>
