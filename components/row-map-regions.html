@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-page-url/iron-page-url.html">
 <link rel='import' href="static-map.html">
 
 <dom-module id="row-map-regions">
@@ -19,7 +20,10 @@
         justify-content: space-between;
       }
     </style>
-    <p>{{css}}</p>
+    <turbo-carto-css query={{query}} css={{css}} result={{turbocss}}></turbo-carto-css>
+
+    <p>{{turbocss}}</p>
+
 
     <div class='maps'>
       <template is="dom-repeat" items="{{regions}}">
