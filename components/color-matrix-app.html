@@ -6,10 +6,13 @@
     <style>
       :host {
         display: block;
+        padding:20px;
+        box-sizing: border-box;
       }
       row-map-regions{
         width:100%;
-        margin-bottom: 20px;
+
+
       }
     </style>
 
@@ -31,15 +34,15 @@
     <template is="dom-repeat" items="{{binTypes}}">
       <h2>{{item}}</h2>
 
-      
-      <row-map-regions style='width:600px; height:400px;'
+
+      <row-map-regions style=''
         user={{user}}
         query = {{query}}
         basemaptype='darkmatter'
         css = {{generatecss(colors,item,variable)}}
       ></row-map-regions>
 
-      <row-map-regions style='width:600px; height:400px;'
+      <row-map-regions style=' '
         user={{user}}
         query = {{query}}
         basemaptype='positron'
